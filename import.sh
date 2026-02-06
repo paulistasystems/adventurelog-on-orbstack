@@ -14,15 +14,15 @@ fi
 
 echo "Iniciando o processo de importação..."
 
-echo "Passo 1: Criando os volumes e containers..."
-docker-compose up -d --no-deps db server
+echo "Passo 1: Parando containers existentes e removendo volumes..."
+docker-compose down -v 2>/dev/null || true
 
-echo "Passo 2: Parando os containers para a restauração..."
-docker-compose stop
+echo "Passo 2: Criando os volumes (sem iniciar os containers)..."
+docker-compose create db server
 
 echo "Passo 3: Restaurando os dados a partir dos backups..."
 
-# Restauração do banco de dados
+# Restauração do banco de dados - ANTES do Postgres inicializar
 echo "Restaurando o volume 'postgres_data' a partir de $BACKUP_DIR/postgres_backup.tar..."
 docker run --rm --volumes-from adventurelog-db -v "$BACKUP_DIR":/backup ubuntu bash -c "cd /var/lib/postgresql/data && tar xvf /backup/postgres_backup.tar"
 
