@@ -50,9 +50,7 @@ This document outlines the planned features, infrastructure improvements, and de
 
 ## 🐛 Bug Fixing
 
-- [ ] **Google Maps**: Verify API key is correctly set in `.env` and restricted; investigate and resolve any connectivity/validation errors in the frontend container.
-- [ ] **CORS/CSRF Configuration**: Verify and fix any cross-origin errors between frontend (`:8015`) and backend (`:8016`).
-- [ ] **Volume Persistence**: Ensure database data correctly persists across container restarts and updates.
+- [ ] **Google Maps**: API key is correctly configured in `.env` and synced to containers, but **GCP billing must be enabled** on the Google Cloud project for the Geocoding API to work. Go to https://console.cloud.google.com/project/_/billing/enable to resolve.
 
 ---
 
@@ -62,3 +60,6 @@ This document outlines the planned features, infrastructure improvements, and de
 - [x] **PostGIS** database integration for geospatial data.
 - [x] Basic environment configuration (`.env`).
 - [x] Deployment of Frontend and Backend services.
+- [x] **CORS/CSRF Configuration**: Verified working — preflight returns correct `access-control-allow-origin` header, Django `CORS_ALLOWED_ORIGINS` and `CSRF_TRUSTED_ORIGINS` are correctly set.
+- [x] **Volume Persistence**: Verified working — named volumes `postgres_data` and `adventurelog_media` persist data across container restarts.
+- [x] **Container env sync**: Restarted containers to pick up current `.env` values (API key was stale).
